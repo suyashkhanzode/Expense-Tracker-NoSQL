@@ -28,4 +28,27 @@ app.use((request, response, next)=>{
  var accessLogStream = fs.createWriteStream(path.join(__dirname, 'access.log'), { flags: 'a' })
  app.use(morgan('combined', { stream: accessLogStream }))
 
+ const userRoute = require('./routes/user')
+  const expenseRoute = require('./routes/expense')
+ const orderRoute = require('./routes/order')
+ const passwordRoute = require('./routes/password')
+ const fileurlRoute = require('./routes/fileurl');
+ 
+ app.use('/user',userRoute)
+ app.use('/expenses',expenseRoute)
+ app.use('/order',orderRoute)
+ app.use('/password',passwordRoute)
+ app.use('/files',fileurlRoute)
+ 
 
+
+ mongoose.connect(process.env.CONNECTION_URL)
+ .then(()=>{
+ 
+     app.listen(3000,()=>{
+         console.log("Server Started")
+     })
+ })
+ .catch((err) =>{
+     console.log(err)
+ })
